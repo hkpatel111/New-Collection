@@ -91,6 +91,16 @@ jobs:
           print(f'Permissions added to {path}')
           EOF
 
+      # Safety: agar flutter create ka default widget test ghusa ho (MyApp
+      # exist nahi karta) to hata do — humara apna test zip me shipped hai.
+      - name: Drop conflicting default widget test
+        working-directory: app-src
+        run: |
+          if [ -f test/widget_test.dart ] && grep -q "MyApp" test/widget_test.dart; then
+            rm test/widget_test.dart
+            echo "Default MyApp widget test removed"
+          fi
+
       - name: Resolve dependencies
         working-directory: app-src
         run: flutter pub get
