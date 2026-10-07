@@ -193,20 +193,6 @@ jobs:
         working-directory: app-src
         run: flutter pub get
 
-      # Optional: Google-services config from repo secrets (skip if not set —
-      # app tab placeholder firebase_options pe Setup screen dikhayegi)
-      - name: Decode google-services.json (optional secret)
-        working-directory: app-src
-        env:
-          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: |
-          if [ -n "$GOOGLE_SERVICES_JSON" ]; then
-            echo "$GOOGLE_SERVICES_JSON" | base64 --decode > android/app/google-services.json
-            echo "google-services.json written from secret"
-          else
-            echo "GOOGLE_SERVICES_JSON secret set nahi hai — build placeholder options ke saath chalega."
-          fi
-
       - name: Run unit tests
         working-directory: app-src
         run: flutter test
